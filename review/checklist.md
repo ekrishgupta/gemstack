@@ -85,8 +85,8 @@ To do this: use Grep to find all references to the sibling values (e.g., grep fo
 - Security enforcement features (blocking, rate limiting, auth) without integration tests verifying the enforcement path works end-to-end
 
 #### Completeness Gaps
-- Shortcut implementations where the complete version would cost <30 minutes CC time (e.g., partial enum handling, incomplete error paths, missing edge cases that are straightforward to add)
-- Options presented with only human-team effort estimates — should show both human and CC+gstack time
+- Shortcut implementations where the complete version would cost <30 minutes Gemini CLI time (e.g., partial enum handling, incomplete error paths, missing edge cases that are straightforward to add)
+- Options presented with only human-team effort estimates — should show both human and Gemini CLI+gemstack time
 - Test coverage gaps where adding the missing tests is a "lake" not an "ocean" (e.g., missing negative-path tests, missing edge case tests that mirror happy-path structure)
 - Features implemented at 80-90% when 100% is achievable with modest additional code
 

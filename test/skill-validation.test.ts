@@ -298,7 +298,7 @@ describe('Cross-skill path consistency', () => {
       const content = fs.readFileSync(filePath, 'utf-8');
 
       const hasBoth = (content.includes('per-project') && content.includes('global')) ||
-        (content.includes('$REMOTE_SLUG/greptile-history') && content.includes('~/.gstack/greptile-history'));
+        (content.includes('$REMOTE_SLUG/greptile-history') && content.includes('~/.gemstack/greptile-history'));
 
       expect(hasBoth).toBe(true);
     }
@@ -307,12 +307,12 @@ describe('Cross-skill path consistency', () => {
   test('greptile-triage.md contains both project and global history paths', () => {
     const content = fs.readFileSync(path.join(ROOT, 'review', 'greptile-triage.md'), 'utf-8');
     expect(content).toContain('$REMOTE_SLUG/greptile-history.md');
-    expect(content).toContain('~/.gstack/greptile-history.md');
+    expect(content).toContain('~/.gemstack/greptile-history.md');
   });
 
   test('retro/SKILL.md reads global greptile-history (not per-project)', () => {
     const content = fs.readFileSync(path.join(ROOT, 'retro', 'SKILL.md'), 'utf-8');
-    expect(content).toContain('~/.gstack/greptile-history.md');
+    expect(content).toContain('~/.gemstack/greptile-history.md');
     // Should NOT reference per-project path for reads
     expect(content).not.toContain('$REMOTE_SLUG/greptile-history.md');
   });
@@ -399,7 +399,7 @@ describe('QA skill structure validation', () => {
     expect(qaContent).toContain('qa-report-');
     expect(qaContent).toContain('baseline.json');
     expect(qaContent).toContain('screenshots/');
-    expect(qaContent).toContain('.gstack/qa-reports/');
+    expect(qaContent).toContain('.gemstack/qa-reports/');
   });
 });
 
@@ -602,7 +602,7 @@ describe('office-hours skill structure', () => {
 
   // YC founder discovery engine
   test('contains YC apply CTA with ref tracking', () => {
-    expect(content).toContain('ycombinator.com/apply?ref=gstack');
+    expect(content).toContain('ycombinator.com/apply?ref=gemstack');
   });
 
   test('contains "What I noticed" design doc section', () => {
@@ -691,7 +691,7 @@ describe('Contributor mode preamble structure', () => {
     test(`${skill} uses periodic reflection (not per-command)`, () => {
       const content = fs.readFileSync(path.join(ROOT, skill), 'utf-8');
       expect(content).toContain('workflow step');
-      expect(content).not.toContain('After you use gstack-provided CLIs');
+      expect(content).not.toContain('After you use gemstack-provided CLIs');
     });
   }
 });
@@ -768,7 +768,7 @@ describe('Completeness Principle in generated SKILL.md files', () => {
 
   test('Completeness Principle includes compression table', () => {
     const content = fs.readFileSync(path.join(ROOT, 'SKILL.md'), 'utf-8');
-    expect(content).toContain('CC+gstack');
+    expect(content).toContain('Gemini CLI+gemstack');
     expect(content).toContain('Compression');
   });
 
@@ -858,10 +858,10 @@ describe('CEO review mode validation', () => {
   });
 });
 
-// --- gstack-slug helper ---
+// --- gemstack-slug helper ---
 
-describe('gstack-slug', () => {
-  const SLUG_BIN = path.join(ROOT, 'bin', 'gstack-slug');
+describe('gemstack-slug', () => {
+  const SLUG_BIN = path.join(ROOT, 'bin', 'gemstack-slug');
 
   test('binary exists and is executable', () => {
     expect(fs.existsSync(SLUG_BIN)).toBe(true);
@@ -917,7 +917,7 @@ describe('Test Bootstrap ({{TEST_BOOTSTRAP}}) integration', () => {
     const content = fs.readFileSync(path.join(ROOT, 'qa', 'SKILL.md'), 'utf-8');
     expect(content).toContain('Test Framework Bootstrap');
     expect(content).toContain('TESTING.md');
-    expect(content).toContain('CLAUDE.md');
+    expect(content).toContain('GEMINI.md');
   });
 
   test('TEST_BOOTSTRAP appears in ship/SKILL.md', () => {
@@ -1005,7 +1005,7 @@ describe('Phase 8e.5 regression test generation', () => {
     const content = fs.readFileSync(path.join(ROOT, 'qa', 'SKILL.md'), 'utf-8');
     expect(content).toContain('// Regression: ISSUE-NNN');
     expect(content).toContain('// Found by /qa on');
-    expect(content).toContain('// Report: .gstack/qa-reports/');
+    expect(content).toContain('// Report: .gemstack/qa-reports/');
   });
 
   test('regression test uses auto-incrementing names', () => {
@@ -1167,7 +1167,7 @@ describe('Codex skill', () => {
   test('codex/SKILL.md contains review log persistence', () => {
     const content = fs.readFileSync(path.join(ROOT, 'codex', 'SKILL.md'), 'utf-8');
     expect(content).toContain('codex-review');
-    expect(content).toContain('gstack-review-log');
+    expect(content).toContain('gemstack-review-log');
   });
 
   test('codex/SKILL.md uses which for binary discovery, not hardcoded path', () => {
@@ -1218,7 +1218,7 @@ describe('Codex skill', () => {
 
 describe('Skill trigger phrases', () => {
   // Skills that must have "Use when" trigger phrases in their description.
-  // Excluded: root gstack (browser tool), gstack-upgrade (gstack-specific),
+  // Excluded: root gemstack (browser tool), gemstack-upgrade (gemstack-specific),
   // humanizer (text tool)
   const SKILLS_REQUIRING_TRIGGERS = [
     'qa', 'qa-only', 'ship', 'review', 'investigate', 'office-hours',

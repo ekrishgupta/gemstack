@@ -1,17 +1,17 @@
 /**
  * LLM-as-a-Judge evals for generated SKILL.md quality.
  *
- * Uses the Anthropic API directly (not Agent SDK) to evaluate whether
+ * Uses the Google Generative AI API directly to evaluate whether
  * generated command docs are clear, complete, and actionable for an AI agent.
  *
- * Requires: ANTHROPIC_API_KEY env var (or EVALS=1 with key already set)
+ * Requires: GEMINI_API_KEY env var (or EVALS=1 with key already set)
  * Run: EVALS=1 bun run test:eval
  *
- * Cost: ~$0.05-0.15 per run (sonnet)
+ * Cost: ~$0.05-0.15 per run (flash)
  */
 
 import { describe, test, expect, afterAll } from 'bun:test';
-import Anthropic from '@anthropic-ai/sdk';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 import * as fs from 'fs';
 import * as path from 'path';
 import { callJudge, judge } from './helpers/llm-judge';
@@ -20,7 +20,7 @@ import { EvalCollector } from './helpers/eval-store';
 import { selectTests, detectBaseBranch, getChangedFiles, LLM_JUDGE_TOUCHFILES, GLOBAL_TOUCHFILES } from './helpers/touchfiles';
 
 const ROOT = path.resolve(import.meta.dir, '..');
-// Run when EVALS=1 is set (requires ANTHROPIC_API_KEY in env)
+// Run when EVALS=1 is set (requires GEMINI_API_KEY in env)
 const evalsEnabled = !!process.env.EVALS;
 const describeEval = evalsEnabled ? describe : describe.skip;
 
@@ -207,13 +207,10 @@ describeIfSelected('LLM-as-judge quality evals', [
 | \`is <prop> <sel>\` | State check (visible/hidden/enabled/disabled/checked/editable/focused) |
 | \`console [--clear\\|--errors]\` | Console messages (--errors filters to error/warning) |`;
 
-    const client = new Anthropic();
-    const response = await client.messages.create({
-      model: 'claude-sonnet-4-6',
-      max_tokens: 1024,
-      messages: [{
-        role: 'user',
-        content: `You are comparing two versions of CLI documentation for an AI coding agent.
+    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
+    const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
+
+    const prompt = `You are comparing two versions of CLI documentation for an AI coding agent.
 
 VERSION A (baseline — hand-maintained):
 ${baseline}
@@ -229,11 +226,11 @@ Which version is better for an AI agent trying to use these commands? Consider:
 Respond with ONLY valid JSON:
 {"winner": "A" or "B" or "tie", "reasoning": "brief explanation", "a_score": N, "b_score": N}
 
-Scores are 1-5 overall quality.`,
-      }],
-    });
+Scores are 1-5 overall quality.`;
 
-    const text = response.content[0].type === 'text' ? response.content[0].text : '';
+    const result_ai = await model.generateContent(prompt);
+    const response = await result_ai.response;
+    const text = response.text();
     const jsonMatch = text.match(/\{[\s\S]*\}/);
     if (!jsonMatch) throw new Error(`Judge returned non-JSON: ${text.slice(0, 200)}`);
     const result = JSON.parse(jsonMatch[0]);
@@ -424,7 +421,7 @@ describeIfSelected('Cross-skill consistency evals', ['cross-skill greptile consi
     const result = await callJudge<{ consistent: boolean; issues: string[]; score: number; reasoning: string }>(`You are evaluating whether multiple skill configuration files implement the same data architecture consistently.
 
 INTENDED ARCHITECTURE:
-- greptile-history has TWO paths: per-project (~/.gstack/projects/{slug}/greptile-history.md) and global (~/.gstack/greptile-history.md)
+- greptile-history has TWO paths: per-project (~/.gemstack/projects/{slug}/greptile-history.md) and global (~/.gemstack/greptile-history.md)
 - /review and /ship WRITE to BOTH paths (per-project for suppressions, global for retro aggregation)
 - /review and /ship delegate write mechanics to greptile-triage.md
 - /retro READS from the GLOBAL path only (it aggregates across all projects)
@@ -607,7 +604,7 @@ describeIfSelected('Ship & Release skill evals', ['ship/SKILL.md workflow', 'doc
       startMarker: '# Document Release:',
       endMarker: '## Important Rules',
       judgeContext: 'a post-ship documentation update workflow',
-      judgeGoal: 'how to audit and update project documentation after code ships: README, ARCHITECTURE, CONTRIBUTING, CLAUDE.md, CHANGELOG, TODOS',
+      judgeGoal: 'how to audit and update project documentation after code ships: README, ARCHITECTURE, CONTRIBUTING, GEMINI.md, CHANGELOG, TODOS',
     });
   }, 30_000);
 });
@@ -682,7 +679,7 @@ describeIfSelected('Design skill evals', ['design-review/SKILL.md fix loop', 'de
 
 // Block 4: Other skills
 describeIfSelected('Other skill evals', [
-  'retro/SKILL.md instructions', 'qa-only/SKILL.md workflow', 'gstack-upgrade/SKILL.md upgrade flow',
+  'retro/SKILL.md instructions', 'qa-only/SKILL.md workflow', 'gemstack-upgrade/SKILL.md upgrade flow',
 ], () => {
   testIfSelected('retro/SKILL.md instructions', async () => {
     await runWorkflowJudge({
@@ -708,11 +705,11 @@ describeIfSelected('Other skill evals', [
     });
   }, 30_000);
 
-  testIfSelected('gstack-upgrade/SKILL.md upgrade flow', async () => {
+  testIfSelected('gemstack-upgrade/SKILL.md upgrade flow', async () => {
     await runWorkflowJudge({
-      testName: 'gstack-upgrade/SKILL.md upgrade flow',
+      testName: 'gemstack-upgrade/SKILL.md upgrade flow',
       suite: 'Other skill evals',
-      skillPath: 'gstack-upgrade/SKILL.md',
+      skillPath: 'gemstack-upgrade/SKILL.md',
       startMarker: '## Inline upgrade flow',
       endMarker: '## Standalone usage',
       judgeContext: 'a version upgrade detection and execution workflow',

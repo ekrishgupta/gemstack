@@ -126,7 +126,7 @@ describe('filterByPeriod', () => {
 describe('formatReport', () => {
   test('includes header and period label', () => {
     const report = formatReport([], 'all');
-    expect(report).toContain('gstack skill usage analytics');
+    expect(report).toContain('gemstack skill usage analytics');
     expect(report).toContain('Period: all time');
   });
 

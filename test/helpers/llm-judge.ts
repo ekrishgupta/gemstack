@@ -4,10 +4,10 @@
  * Provides callJudge (generic JSON-from-LLM), judge (doc quality scorer),
  * and outcomeJudge (planted-bug detection scorer).
  *
- * Requires: ANTHROPIC_API_KEY env var
+ * Requires: GEMINI_API_KEY env var
  */
 
-import Anthropic from '@anthropic-ai/sdk';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
 export interface JudgeScore {
   clarity: number;       // 1-5
@@ -26,31 +26,29 @@ export interface OutcomeJudgeResult {
 }
 
 /**
- * Call claude-sonnet-4-6 with a prompt, extract JSON response.
+ * Call gemini-2.0-flash with a prompt, extract JSON response.
  * Retries once on 429 rate limit errors.
  */
 export async function callJudge<T>(prompt: string): Promise<T> {
-  const client = new Anthropic();
+  const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
+  const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
 
-  const makeRequest = () => client.messages.create({
-    model: 'claude-sonnet-4-6',
-    max_tokens: 1024,
-    messages: [{ role: 'user', content: prompt }],
-  });
+  const makeRequest = () => model.generateContent(prompt);
 
-  let response;
+  let result;
   try {
-    response = await makeRequest();
+    result = await makeRequest();
   } catch (err: any) {
     if (err.status === 429) {
       await new Promise(r => setTimeout(r, 1000));
-      response = await makeRequest();
+      result = await makeRequest();
     } else {
       throw err;
     }
   }
 
-  const text = response.content[0].type === 'text' ? response.content[0].text : '';
+  const response = await result.response;
+  const text = response.text();
   const jsonMatch = text.match(/\{[\s\S]*\}/);
   if (!jsonMatch) throw new Error(`Judge returned non-JSON: ${text.slice(0, 200)}`);
   return JSON.parse(jsonMatch[0]) as T;

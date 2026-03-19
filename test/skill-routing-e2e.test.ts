@@ -44,14 +44,14 @@ if (evalsEnabled && !process.env.EVALS_ALL) {
 
 // --- Helper functions ---
 
-/** Copy all SKILL.md files into tmpDir/.claude/skills/gstack/ for auto-discovery */
+/** Copy all SKILL.md files into tmpDir/.gemini/skills/gemstack/ for auto-discovery */
 function installSkills(tmpDir: string) {
   const skillDirs = [
-    '', // root gstack SKILL.md
+    '', // root gemstack SKILL.md
     'qa', 'qa-only', 'ship', 'review', 'plan-ceo-review', 'plan-eng-review',
     'plan-design-review', 'design-review', 'design-consultation', 'retro',
     'document-release', 'investigate', 'office-hours', 'browse', 'setup-browser-cookies',
-    'gstack-upgrade', 'humanizer',
+    'gemstack-upgrade', 'humanizer',
   ];
 
   for (const skill of skillDirs) {
@@ -59,8 +59,8 @@ function installSkills(tmpDir: string) {
     if (!fs.existsSync(srcPath)) continue;
 
     const destDir = skill
-      ? path.join(tmpDir, '.claude', 'skills', 'gstack', skill)
-      : path.join(tmpDir, '.claude', 'skills', 'gstack');
+      ? path.join(tmpDir, '.gemini', 'skills', 'gemstack', skill)
+      : path.join(tmpDir, '.gemini', 'skills', 'gemstack');
     fs.mkdirSync(destDir, { recursive: true });
     fs.copyFileSync(srcPath, path.join(destDir, 'SKILL.md'));
   }
@@ -130,7 +130,7 @@ describeE2E('Skill Routing E2E — Developer Journey', () => {
       logCost(`journey: ${testName}`, result);
       recordRouting(testName, result, expectedSkill, actualSkill);
 
-      expect(skillCalls.length, `Expected Skill tool to be called but got 0 calls. Claude may have answered directly without invoking a skill. Tool calls: ${result.toolCalls.map(tc => tc.tool).join(', ')}`).toBeGreaterThan(0);
+      expect(skillCalls.length, `Expected Skill tool to be called but got 0 calls. Gemini may have answered directly without invoking a skill. Tool calls: ${result.toolCalls.map(tc => tc.tool).join(', ')}`).toBeGreaterThan(0);
       expect([expectedSkill], `Expected skill ${expectedSkill} but got ${actualSkill}`).toContain(actualSkill);
     } finally {
       fs.rmSync(tmpDir, { recursive: true, force: true });
@@ -182,7 +182,7 @@ describeE2E('Skill Routing E2E — Developer Journey', () => {
       logCost(`journey: ${testName}`, result);
       recordRouting(testName, result, expectedSkill, actualSkill);
 
-      expect(skillCalls.length, `Expected Skill tool to be called but got 0 calls. Claude may have answered directly without invoking a skill. Tool calls: ${result.toolCalls.map(tc => tc.tool).join(', ')}`).toBeGreaterThan(0);
+      expect(skillCalls.length, `Expected Skill tool to be called but got 0 calls. Gemini may have answered directly without invoking a skill. Tool calls: ${result.toolCalls.map(tc => tc.tool).join(', ')}`).toBeGreaterThan(0);
       expect([expectedSkill], `Expected skill ${expectedSkill} but got ${actualSkill}`).toContain(actualSkill);
     } finally {
       fs.rmSync(tmpDir, { recursive: true, force: true });
@@ -234,7 +234,7 @@ describeE2E('Skill Routing E2E — Developer Journey', () => {
       logCost(`journey: ${testName}`, result);
       recordRouting(testName, result, expectedSkill, actualSkill);
 
-      expect(skillCalls.length, `Expected Skill tool to be called but got 0 calls. Claude may have answered directly without invoking a skill. Tool calls: ${result.toolCalls.map(tc => tc.tool).join(', ')}`).toBeGreaterThan(0);
+      expect(skillCalls.length, `Expected Skill tool to be called but got 0 calls. Gemini may have answered directly without invoking a skill. Tool calls: ${result.toolCalls.map(tc => tc.tool).join(', ')}`).toBeGreaterThan(0);
       expect([expectedSkill], `Expected skill ${expectedSkill} but got ${actualSkill}`).toContain(actualSkill);
     } finally {
       fs.rmSync(tmpDir, { recursive: true, force: true });
@@ -294,7 +294,7 @@ export default app;
       logCost(`journey: ${testName}`, result);
       recordRouting(testName, result, expectedSkill, actualSkill);
 
-      expect(skillCalls.length, `Expected Skill tool to be called but got 0 calls. Claude may have answered directly without invoking a skill. Tool calls: ${result.toolCalls.map(tc => tc.tool).join(', ')}`).toBeGreaterThan(0);
+      expect(skillCalls.length, `Expected Skill tool to be called but got 0 calls. Gemini may have answered directly without invoking a skill. Tool calls: ${result.toolCalls.map(tc => tc.tool).join(', ')}`).toBeGreaterThan(0);
       expect([expectedSkill], `Expected skill ${expectedSkill} but got ${actualSkill}`).toContain(actualSkill);
     } finally {
       fs.rmSync(tmpDir, { recursive: true, force: true });
@@ -333,7 +333,7 @@ export default app;
       logCost(`journey: ${testName}`, result);
       recordRouting(testName, result, expectedSkill, actualSkill);
 
-      expect(skillCalls.length, `Expected Skill tool to be called but got 0 calls. Claude may have answered directly without invoking a skill. Tool calls: ${result.toolCalls.map(tc => tc.tool).join(', ')}`).toBeGreaterThan(0);
+      expect(skillCalls.length, `Expected Skill tool to be called but got 0 calls. Gemini may have answered directly without invoking a skill. Tool calls: ${result.toolCalls.map(tc => tc.tool).join(', ')}`).toBeGreaterThan(0);
       expect(acceptable, `Expected skill ${expectedSkill} but got ${actualSkill}`).toContain(actualSkill);
     } finally {
       fs.rmSync(tmpDir, { recursive: true, force: true });
@@ -376,7 +376,7 @@ export default app;
       logCost(`journey: ${testName}`, result);
       recordRouting(testName, result, expectedSkill, actualSkill);
 
-      expect(skillCalls.length, `Expected Skill tool to be called but got 0 calls. Claude may have answered directly without invoking a skill. Tool calls: ${result.toolCalls.map(tc => tc.tool).join(', ')}`).toBeGreaterThan(0);
+      expect(skillCalls.length, `Expected Skill tool to be called but got 0 calls. Gemini may have answered directly without invoking a skill. Tool calls: ${result.toolCalls.map(tc => tc.tool).join(', ')}`).toBeGreaterThan(0);
       expect([expectedSkill], `Expected skill ${expectedSkill} but got ${actualSkill}`).toContain(actualSkill);
     } finally {
       fs.rmSync(tmpDir, { recursive: true, force: true });
@@ -418,7 +418,7 @@ export default app;
       logCost(`journey: ${testName}`, result);
       recordRouting(testName, result, expectedSkill, actualSkill);
 
-      expect(skillCalls.length, `Expected Skill tool to be called but got 0 calls. Claude may have answered directly without invoking a skill. Tool calls: ${result.toolCalls.map(tc => tc.tool).join(', ')}`).toBeGreaterThan(0);
+      expect(skillCalls.length, `Expected Skill tool to be called but got 0 calls. Gemini may have answered directly without invoking a skill. Tool calls: ${result.toolCalls.map(tc => tc.tool).join(', ')}`).toBeGreaterThan(0);
       expect([expectedSkill], `Expected skill ${expectedSkill} but got ${actualSkill}`).toContain(actualSkill);
     } finally {
       fs.rmSync(tmpDir, { recursive: true, force: true });
@@ -458,7 +458,7 @@ export default app;
       logCost(`journey: ${testName}`, result);
       recordRouting(testName, result, expectedSkill, actualSkill);
 
-      expect(skillCalls.length, `Expected Skill tool to be called but got 0 calls. Claude may have answered directly without invoking a skill. Tool calls: ${result.toolCalls.map(tc => tc.tool).join(', ')}`).toBeGreaterThan(0);
+      expect(skillCalls.length, `Expected Skill tool to be called but got 0 calls. Gemini may have answered directly without invoking a skill. Tool calls: ${result.toolCalls.map(tc => tc.tool).join(', ')}`).toBeGreaterThan(0);
       expect([expectedSkill], `Expected skill ${expectedSkill} but got ${actualSkill}`).toContain(actualSkill);
     } finally {
       fs.rmSync(tmpDir, { recursive: true, force: true });
@@ -504,7 +504,7 @@ export default app;
       logCost(`journey: ${testName}`, result);
       recordRouting(testName, result, expectedSkill, actualSkill);
 
-      expect(skillCalls.length, `Expected Skill tool to be called but got 0 calls. Claude may have answered directly without invoking a skill. Tool calls: ${result.toolCalls.map(tc => tc.tool).join(', ')}`).toBeGreaterThan(0);
+      expect(skillCalls.length, `Expected Skill tool to be called but got 0 calls. Gemini may have answered directly without invoking a skill. Tool calls: ${result.toolCalls.map(tc => tc.tool).join(', ')}`).toBeGreaterThan(0);
       expect([expectedSkill], `Expected skill ${expectedSkill} but got ${actualSkill}`).toContain(actualSkill);
     } finally {
       fs.rmSync(tmpDir, { recursive: true, force: true });
@@ -542,7 +542,7 @@ export default app;
       logCost(`journey: ${testName}`, result);
       recordRouting(testName, result, expectedSkill, actualSkill);
 
-      expect(skillCalls.length, `Expected Skill tool to be called but got 0 calls. Claude may have answered directly without invoking a skill. Tool calls: ${result.toolCalls.map(tc => tc.tool).join(', ')}`).toBeGreaterThan(0);
+      expect(skillCalls.length, `Expected Skill tool to be called but got 0 calls. Gemini may have answered directly without invoking a skill. Tool calls: ${result.toolCalls.map(tc => tc.tool).join(', ')}`).toBeGreaterThan(0);
       expect([expectedSkill], `Expected skill ${expectedSkill} but got ${actualSkill}`).toContain(actualSkill);
     } finally {
       fs.rmSync(tmpDir, { recursive: true, force: true });
@@ -596,7 +596,7 @@ body { font-family: sans-serif; }
       logCost(`journey: ${testName}`, result);
       recordRouting(testName, result, expectedSkill, actualSkill);
 
-      expect(skillCalls.length, `Expected Skill tool to be called but got 0 calls. Claude may have answered directly without invoking a skill. Tool calls: ${result.toolCalls.map(tc => tc.tool).join(', ')}`).toBeGreaterThan(0);
+      expect(skillCalls.length, `Expected Skill tool to be called but got 0 calls. Gemini may have answered directly without invoking a skill. Tool calls: ${result.toolCalls.map(tc => tc.tool).join(', ')}`).toBeGreaterThan(0);
       expect([expectedSkill], `Expected skill ${expectedSkill} but got ${actualSkill}`).toContain(actualSkill);
     } finally {
       fs.rmSync(tmpDir, { recursive: true, force: true });

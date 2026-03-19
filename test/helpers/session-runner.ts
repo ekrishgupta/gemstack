@@ -1,8 +1,8 @@
 /**
- * Claude CLI subprocess runner for skill E2E testing.
+ * Gemini CLI subprocess runner for skill E2E testing.
  *
- * Spawns `claude -p` as a completely independent process (not via Agent SDK),
- * so it works inside Claude Code sessions. Pipes prompt via stdin, streams
+ * Spawns `gemini -p` as a completely independent process (not via Agent SDK),
+ * so it works inside Gemini CLI sessions. Pipes prompt via stdin, streams
  * NDJSON output for real-time progress, scans for browse errors.
  */
 
@@ -10,8 +10,8 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as os from 'os';
 
-const GSTACK_DEV_DIR = path.join(os.homedir(), '.gstack-dev');
-const HEARTBEAT_PATH = path.join(GSTACK_DEV_DIR, 'e2e-live.json');
+const GEMSTACK_DEV_DIR = path.join(os.homedir(), '.gemstack-dev');
+const HEARTBEAT_PATH = path.join(GEMSTACK_DEV_DIR, 'e2e-live.json');
 
 /** Sanitize test name for use as filename: strip leading slashes, replace / with - */
 export function sanitizeTestName(name: string): string {
@@ -135,12 +135,12 @@ export async function runSkillTest(options: {
   const safeName = testName ? sanitizeTestName(testName) : null;
   if (runId) {
     try {
-      runDir = path.join(GSTACK_DEV_DIR, 'e2e-runs', runId);
+      runDir = path.join(GEMSTACK_DEV_DIR, 'e2e-runs', runId);
       fs.mkdirSync(runDir, { recursive: true });
     } catch { /* non-fatal */ }
   }
 
-  // Spawn claude -p with streaming NDJSON output. Prompt piped via stdin to
+  // Spawn gemini -p with streaming NDJSON output. Prompt piped via stdin to
   // avoid shell escaping issues. --verbose is required for stream-json mode.
   const args = [
     '-p',
@@ -155,7 +155,7 @@ export async function runSkillTest(options: {
   const promptFile = path.join(workingDirectory, '.prompt-tmp');
   fs.writeFileSync(promptFile, prompt);
 
-  const proc = Bun.spawn(['sh', '-c', `cat "${promptFile}" | claude ${args.map(a => `"${a}"`).join(' ')}`], {
+  const proc = Bun.spawn(['sh', '-c', `cat "${promptFile}" | gemini ${args.map(a => `"${a}"`).join(' ')}`], {
     cwd: workingDirectory,
     stdout: 'pipe',
     stderr: 'pipe',
@@ -279,7 +279,7 @@ export async function runSkillTest(options: {
   // Use resultLine for structured result data
   if (resultLine) {
     if (resultLine.is_error) {
-      // claude -p can return subtype=success with is_error=true (e.g. API connection failure)
+      // gemini -p can return subtype=success with is_error=true (e.g. API connection failure)
       exitReason = 'error_api';
     } else if (resultLine.subtype === 'success') {
       exitReason = 'success';
@@ -291,7 +291,7 @@ export async function runSkillTest(options: {
   // Save failure transcript to persistent run directory (or fallback to workingDirectory)
   if (browseErrors.length > 0 || exitReason !== 'success') {
     try {
-      const failureDir = runDir || path.join(workingDirectory, '.gstack', 'test-transcripts');
+      const failureDir = runDir || path.join(workingDirectory, '.gemstack', 'test-transcripts');
       fs.mkdirSync(failureDir, { recursive: true });
       const failureName = safeName
         ? `${safeName}-failure.json`
