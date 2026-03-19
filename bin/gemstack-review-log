@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# gemstack-review-log — atomically log a review result
+# Usage: gemstack-review-log '{"skill":"...","timestamp":"...","status":"..."}'
+set -euo pipefail
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+eval $("$SCRIPT_DIR/gemstack-slug" 2>/dev/null)
+GEMSTACK_HOME="${GEMSTACK_HOME:-$HOME/.gemstack}"
+mkdir -p "$GEMSTACK_HOME/projects/$SLUG"
+echo "$1" >> "$GEMSTACK_HOME/projects/$SLUG/$BRANCH-reviews.jsonl"

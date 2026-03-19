@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# gstack-update-check — periodic version check for all skills.
+# gemstack-update-check — periodic version check for all skills.
 #
 # Output (one line, or nothing):
 #   JUST_UPGRADED <old> <new>       — marker found from recent upgrade
@@ -7,26 +7,26 @@
 #   (nothing)                       — up to date, snoozed, disabled, or check skipped
 #
 # Env overrides (for testing):
-#   GSTACK_DIR          — override auto-detected gstack root
-#   GSTACK_REMOTE_URL   — override remote VERSION URL
-#   GSTACK_STATE_DIR    — override ~/.gstack state directory
+#   GEMSTACK_DIR          — override auto-detected gemstack root
+#   GEMSTACK_REMOTE_URL   — override remote VERSION URL
+#   GEMSTACK_STATE_DIR    — override ~/.gemstack state directory
 set -euo pipefail
 
-GSTACK_DIR="${GSTACK_DIR:-$(cd "$(dirname "$0")/.." && pwd)}"
-STATE_DIR="${GSTACK_STATE_DIR:-$HOME/.gstack}"
+GEMSTACK_DIR="${GEMSTACK_DIR:-$(cd "$(dirname "$0")/.." && pwd)}"
+STATE_DIR="${GEMSTACK_STATE_DIR:-$HOME/.gemstack}"
 CACHE_FILE="$STATE_DIR/last-update-check"
 MARKER_FILE="$STATE_DIR/just-upgraded-from"
 SNOOZE_FILE="$STATE_DIR/update-snoozed"
-VERSION_FILE="$GSTACK_DIR/VERSION"
-REMOTE_URL="${GSTACK_REMOTE_URL:-https://raw.githubusercontent.com/garrytan/gstack/main/VERSION}"
+VERSION_FILE="$GEMSTACK_DIR/VERSION"
+REMOTE_URL="${GEMSTACK_REMOTE_URL:-https://raw.githubusercontent.com/ekrishgupta/gemstack/main/VERSION}"
 
-# ─── Force flag (busts cache for standalone /gstack-upgrade) ──
+# ─── Force flag (busts cache for standalone /gemstack-upgrade) ──
 if [ "${1:-}" = "--force" ]; then
   rm -f "$CACHE_FILE"
 fi
 
 # ─── Step 0: Check if updates are disabled ────────────────────
-_UC=$("$GSTACK_DIR/bin/gstack-config" get update_check 2>/dev/null || true)
+_UC=$("$GEMSTACK_DIR/bin/gemstack-config" get update_check 2>/dev/null || true)
 if [ "$_UC" = "false" ]; then
   exit 0
 fi
