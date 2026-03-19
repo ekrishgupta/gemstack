@@ -1,6 +1,6 @@
 # Skill Deep Dives
 
-Detailed guides for every gstack skill — philosophy, workflow, and examples.
+Detailed guides for every gemstack skill — philosophy, workflow, and examples.
 
 | Skill | Your specialist | What they do |
 |-------|----------------|--------------|
@@ -28,7 +28,7 @@ Detailed guides for every gstack skill — philosophy, workflow, and examples.
 | [`/freeze`](#safety--guardrails) | **Edit Lock** | Restrict all file edits to a single directory. Blocks Edit and Write outside the boundary. Accident prevention for debugging. |
 | [`/guard`](#safety--guardrails) | **Full Safety** | Combines /careful + /freeze in one command. Maximum safety for prod work. |
 | [`/unfreeze`](#safety--guardrails) | **Unlock** | Remove the /freeze boundary, allowing edits everywhere again. |
-| [`/gstack-upgrade`](#gstack-upgrade) | **Self-Updater** | Upgrade gstack to the latest version. Detects global vs vendored install, syncs both, shows what changed. |
+| [`/gemstack-upgrade`](#gemstack-upgrade) | **Self-Updater** | Upgrade gemstack to the latest version. Detects global vs vendored install, syncs both, shows what changed. |
 
 ---
 
@@ -69,9 +69,9 @@ You agree, disagree, or adjust. Every premise you accept becomes load-bearing in
 
 Then it generates 2-3 concrete implementation approaches with honest effort estimates:
 
-- **Approach A: Daily Briefing First** — narrowest wedge, ships tomorrow, M effort (human: ~3 weeks / CC: ~2 days)
-- **Approach B: CRM-First** — build the relationship graph first, L effort (human: ~6 weeks / CC: ~4 days)
-- **Approach C: Full Vision** — everything at once, XL effort (human: ~3 months / CC: ~1.5 weeks)
+- **Approach A: Daily Briefing First** — narrowest wedge, ships tomorrow, M effort (human: ~3 weeks / Gemini: ~2 days)
+- **Approach B: CRM-First** — build the relationship graph first, L effort (human: ~6 weeks / Gemini: ~4 days)
+- **Approach C: Full Vision** — everything at once, XL effort (human: ~3 months / Gemini: ~1.5 weeks)
 
 Recommends A because you learn from real usage. CRM data comes naturally in week two.
 
@@ -83,7 +83,7 @@ Recommends A because you learn from real usage. CRM data comes naturally in week
 
 ### The design doc
 
-Both modes end with a design doc written to `~/.gstack/projects/` — and that doc feeds directly into `/plan-ceo-review` and `/plan-eng-review`. The full lifecycle is now: `office-hours → plan → implement → review → QA → ship → retro`.
+Both modes end with a design doc written to `~/.gemstack/projects/` — and that doc feeds directly into `/plan-ceo-review` and `/plan-eng-review`. The full lifecycle is now: `office-hours → plan → implement → review → QA → ship → retro`.
 
 After the design doc is approved, `/office-hours` reflects on what it noticed about how you think — not generic praise, but specific callbacks to things you said during the session. The observations appear in the design doc too, so you re-encounter them when you re-read later.
 
@@ -137,7 +137,7 @@ It asks, **"what is the 10-star product hiding inside this request?"**
 - **HOLD SCOPE** — maximum rigor on the existing plan. No expansions surfaced.
 - **SCOPE REDUCTION** — find the minimum viable version. Cut everything else.
 
-Visions and decisions are persisted to `~/.gstack/projects/` so they survive beyond the conversation. Exceptional visions can be promoted to `docs/designs/` in your repo for the team.
+Visions and decisions are persisted to `~/.gemstack/projects/` so they survive beyond the conversation. Exceptional visions can be promoted to `docs/designs/` in your repo for the team.
 
 ---
 
@@ -214,11 +214,11 @@ Every review (CEO, Eng, Design) logs its result. At the end of each review, you 
 +====================================================================+
 ```
 
-Eng Review is the only required gate (disable with `gstack-config set skip_eng_review true`). CEO and Design are informational — recommended for product and UI changes respectively.
+Eng Review is the only required gate (disable with `gemstack-config set skip_eng_review true`). CEO and Design are informational — recommended for product and UI changes respectively.
 
 ### Plan-to-QA flow
 
-When `/plan-eng-review` finishes the test review section, it writes a test plan artifact to `~/.gstack/projects/`. When you later run `/qa`, it picks up that test plan automatically — your engineering review feeds directly into QA testing with no manual copy-paste.
+When `/plan-eng-review` finishes the test review section, it writes a test plan artifact to `~/.gemstack/projects/`. When you later run `/qa`, it picks up that test plan automatically — your engineering review feeds directly into QA testing with no manual copy-paste.
 
 ---
 
@@ -239,7 +239,7 @@ Seven passes over the plan: information architecture, interaction state coverage
 ```
 You:   /plan-design-review
 
-Claude: Initial Design Rating: 4/10
+Gemini: Initial Design Rating: 4/10
 
         "This plan describes a user dashboard but never specifies
          what the user sees first. It says 'cards with icons' —
@@ -287,21 +287,21 @@ If you want, the agent will research what's already out there in your space — 
 
 After you agree on the system, it generates an interactive HTML preview page — not just swatches and font samples, but realistic product pages. If you are building a dashboard, you see a dashboard with a sidebar, data tables, and stat cards. If you are building a marketing site, you see a hero section with real copy and a CTA. Everything rendered in your design system, with your product name, in light and dark mode. You see what your product could feel like before a single line of production code is written.
 
-Then it writes `DESIGN.md` to your repo root — your project's design source of truth — and updates `CLAUDE.md` so every future Claude Code session respects the system. From that point on, `/design-review` can audit against it, and any agent working on your frontend knows the rules.
+Then it writes `DESIGN.md` to your repo root — your project's design source of truth — and updates `GEMINI.md` so every future Gemini CLI session respects the system. From that point on, `/design-review` can audit against it, and any agent working on your frontend knows the rules.
 
 ### Example
 
 ```
 You:   /design-consultation
 
-Claude: From the README, this looks like a developer analytics dashboard
+Gemini: From the README, this looks like a developer analytics dashboard
         for engineering teams. Sound right? Tell me about the feeling
         you want — and would you like me to look at what's out there
         first so we can see the landscape?
 
 You:    Yes, it's for eng managers. Show me what's out there.
 
-Claude: [browses Linear, Vercel, Datadog, Posthog — takes screenshots]
+Gemini: [browses Linear, Vercel, Datadog, Posthog — takes screenshots]
 
         Here's the landscape. They all converge on clean sans-serifs
         and muted blue-gray palettes. Linear stands out with dark-first
@@ -336,7 +336,7 @@ Claude: [browses Linear, Vercel, Datadog, Posthog — takes screenshots]
 
 You:    Love the serif risk. Let's see it.
 
-Claude: Preview opened in your browser.
+Gemini: Preview opened in your browser.
         [/tmp/design-consultation-preview-1710000000.html]
 
         The page shows a realistic dashboard: sidebar nav, header with
@@ -349,8 +349,8 @@ Claude: Preview opened in your browser.
 
 You:    Ship it.
 
-Claude: Wrote DESIGN.md (typography, color, spacing, layout, motion).
-        Updated CLAUDE.md with design system guidelines.
+Gemini: Wrote DESIGN.md (typography, color, spacing, layout, motion).
+        Updated GEMINI.md with design system guidelines.
         All future sessions will respect these choices.
 ```
 
@@ -371,7 +371,7 @@ The self-regulation heuristic is tuned for design work — CSS-only changes get 
 ```
 You:   /design-review https://myapp.com
 
-Claude: [Runs full 80-item visual audit on the live site]
+Gemini: [Runs full 80-item visual audit on the live site]
         Design Score: C  |  AI Slop Score: D
         12 findings (4 high, 5 medium, 3 polish)
 
@@ -391,7 +391,7 @@ Claude: [Runs full 80-item visual audit on the live site]
         Design Score: C → B+  |  AI Slop Score: D → A
         9 fixes applied (8 verified, 1 best-effort). 3 deferred.
 
-        [Report with before/after screenshots saved to .gstack/design-reports/]
+        [Report with before/after screenshots saved to .gemstack/design-reports/]
 ```
 
 Nine commits, each touching one concern. The AI Slop score went from D to A because the three most recognizable patterns (gradient hero, 3-column grid, uniform radius) are gone.
@@ -427,7 +427,7 @@ Findings get action, not just listed. Obvious mechanical fixes (dead code, stale
 
 ### Completeness gaps
 
-`/review` now flags shortcut implementations where the complete version costs less than 30 minutes of CC time. If you chose the 80% solution and the 100% solution is a lake, not an ocean, the review will call it out.
+`/review` now flags shortcut implementations where the complete version costs less than 30 minutes of Gemini CLI time. If you chose the 80% solution and the 100% solution is a lake, not an ocean, the review will call it out.
 
 ### Example
 
@@ -482,7 +482,7 @@ When `/qa` fixes a bug and verifies it, it automatically generates a regression 
 ```
 You:   /qa https://staging.myapp.com
 
-Claude: [Explores 12 pages, fills 3 forms, tests 2 flows]
+Gemini: [Explores 12 pages, fills 3 forms, tests 2 flows]
 
         QA Report: staging.myapp.com — Health Score: 72/100
 
@@ -491,7 +491,7 @@ Claude: [Explores 12 pages, fills 3 forms, tests 2 flows]
         2. HIGH: Mobile nav menu doesn't close after selecting an item
         3. MEDIUM: Dashboard chart overlaps sidebar below 1024px
 
-        [Full report with screenshots saved to .gstack/qa-reports/]
+        [Full report with screenshots saved to .gemstack/qa-reports/]
 ```
 
 **Testing authenticated pages:** Use `/setup-browser-cookies` first to import your real browser sessions, then `/qa` can test pages behind login.
@@ -533,10 +533,10 @@ After `/ship` creates the PR but before it merges, `/document-release` reads eve
 ```
 You:   /document-release
 
-Claude: Analyzing 21 files changed across 3 commits. Found 8 documentation files.
+Gemini: Analyzing 21 files changed across 3 commits. Found 8 documentation files.
 
         README.md: updated skill count from 9 to 10, added new skill to table
-        CLAUDE.md: added new directory to project structure
+        GEMINI.md: added new directory to project structure
         CONTRIBUTING.md: current — no changes needed
         TODOS.md: marked 2 items complete, added 1 new item
 
@@ -562,7 +562,7 @@ It also tracks test health: total test files, tests added this period, regressio
 ```
 You:   /retro
 
-Claude: Week of Mar 1: 47 commits (3 contributors), 3.2k LOC, 38% tests, 12 PRs, peak: 10pm | Streak: 47d
+Gemini: Week of Mar 1: 47 commits (3 contributors), 3.2k LOC, 38% tests, 12 PRs, peak: 10pm | Streak: 47d
 
         ## Your Week
         32 commits, +2.4k LOC, 41% tests. Peak hours: 9-11pm.
@@ -601,7 +601,7 @@ It is a compiled binary that talks to a persistent Chromium daemon — built on 
 You:   /browse staging.myapp.com — log in, test the signup flow, and check
        every page I changed in this branch
 
-Claude: [18 tool calls, ~60 seconds]
+Gemini: [18 tool calls, ~60 seconds]
 
         > browse goto https://staging.myapp.com/signup
         > browse snapshot -i
@@ -631,7 +631,7 @@ Claude: [18 tool calls, ~60 seconds]
 When the headless browser gets stuck — CAPTCHA, MFA, complex auth — hand off to the user:
 
 ```
-Claude: I'm stuck on a CAPTCHA at the login page. Opening a visible
+Gemini: I'm stuck on a CAPTCHA at the login page. Opening a visible
         Chrome so you can solve it.
 
         > browse handoff "Stuck on CAPTCHA at login page"
@@ -642,7 +642,7 @@ Claude: I'm stuck on a CAPTCHA at the login page. Opening a visible
 
 You:    done
 
-Claude: > browse resume
+Gemini: > browse resume
 
         Got a fresh snapshot. Logged in successfully. Continuing QA.
 ```
@@ -666,14 +666,14 @@ It auto-detects installed Chromium browsers (Comet, Chrome, Arc, Brave, Edge), d
 ```
 You:   /setup-browser-cookies
 
-Claude: Cookie picker opened — select the domains you want to import
+Gemini: Cookie picker opened — select the domains you want to import
         in your browser, then tell me when you're done.
 
         [You pick github.com, myapp.com in the browser UI]
 
 You:    done
 
-Claude: Imported 2 domains (47 cookies). Session is ready.
+Gemini: Imported 2 domains (47 cookies). Session is ready.
 ```
 
 Or skip the UI entirely:
@@ -681,7 +681,7 @@ Or skip the UI entirely:
 ```
 You:   /setup-browser-cookies github.com
 
-Claude: Imported 12 cookies for github.com from Comet.
+Gemini: Imported 12 cookies for github.com from Comet.
 ```
 
 ---
@@ -690,11 +690,11 @@ Claude: Imported 12 cookies for github.com from Comet.
 
 This is my **second opinion mode**.
 
-When `/review` catches bugs from Claude's perspective, `/codex` brings a completely different AI — OpenAI's Codex CLI — to review the same diff. Different training, different blind spots, different strengths. The overlap tells you what's definitely real. The unique findings from each are where you find the bugs neither would catch alone.
+When `/review` catches bugs from Gemini's perspective, `/codex` brings a completely different AI — OpenAI's Codex CLI — to review the same diff. Different training, different blind spots, different strengths. The overlap tells you what's definitely real. The unique findings from each are where you find the bugs neither would catch alone.
 
 ### Three modes
 
-**Review** — run `codex review` against the current diff. Codex reads every changed file, classifies findings by severity (P1 critical, P2 high, P3 medium), and returns a PASS/FAIL verdict. Any P1 finding = FAIL. The review is fully independent — Codex doesn't see Claude's review.
+**Review** — run `codex review` against the current diff. Codex reads every changed file, classifies findings by severity (P1 critical, P2 high, P3 medium), and returns a PASS/FAIL verdict. Any P1 finding = FAIL. The review is fully independent — Codex doesn't see Gemini's review.
 
 **Challenge** — adversarial mode. Codex actively tries to break your code. It looks for edge cases, race conditions, security holes, and assumptions that would fail under load. Uses maximum reasoning effort (`xhigh`). Think of it as a penetration test for your logic.
 
@@ -702,12 +702,12 @@ When `/review` catches bugs from Claude's perspective, `/codex` brings a complet
 
 ### Cross-model analysis
 
-When both `/review` (Claude) and `/codex` (OpenAI) have reviewed the same branch, you get a cross-model comparison: which findings overlap (high confidence), which are unique to Codex (different perspective), and which are unique to Claude. This is the "two doctors, same patient" approach to code review.
+When both `/review` (Gemini) and `/codex` (OpenAI) have reviewed the same branch, you get a cross-model comparison: which findings overlap (high confidence), which are unique to Codex (different perspective), and which are unique to Gemini. This is the "two doctors, same patient" approach to code review.
 
 ```
 You:   /codex review
 
-Claude: Running independent Codex review...
+Gemini: Running independent Codex review...
 
         CODEX REVIEW: PASS (3 findings)
         [P2] Race condition in payment handler — concurrent charges
@@ -725,7 +725,7 @@ Claude: Running independent Codex review...
 
 ## Safety & Guardrails
 
-Four skills that add safety rails to any Claude Code session. They work via Claude Code's PreToolUse hooks — transparent, session-scoped, no configuration files.
+Four skills that add safety rails to any Gemini CLI session. They work via Gemini CLI's PreToolUse hooks — transparent, session-scoped, no configuration files.
 
 ### `/careful`
 
@@ -745,18 +745,18 @@ You can override any warning. The guardrails are accident prevention, not access
 
 ### `/freeze`
 
-Restrict all file edits to a single directory. When you're debugging a billing bug, you don't want Claude accidentally "fixing" unrelated code in `src/auth/`. `/freeze src/billing` blocks all Edit and Write operations outside that path.
+Restrict all file edits to a single directory. When you're debugging a billing bug, you don't want Gemini accidentally "fixing" unrelated code in `src/auth/`. `/freeze src/billing` blocks all Edit and Write operations outside that path.
 
 `/investigate` activates this automatically — it detects the module being debugged and freezes edits to that directory.
 
 ```
 You:   /freeze src/billing
 
-Claude: Edits restricted to src/billing/. Run /unfreeze to remove.
+Gemini: Edits restricted to src/billing/. Run /unfreeze to remove.
 
-        [Later, Claude tries to edit src/auth/middleware.ts]
+        [Later, Gemini tries to edit src/auth/middleware.ts]
 
-Claude: BLOCKED — Edit outside freeze boundary (src/billing/).
+Gemini: BLOCKED — Edit outside freeze boundary (src/billing/).
         Skipping this change.
 ```
 
@@ -772,14 +772,14 @@ Remove the `/freeze` boundary, allowing edits everywhere again. The hooks stay r
 
 ---
 
-## `/gstack-upgrade`
+## `/gemstack-upgrade`
 
-Keep gstack current with one command. It detects your install type (global at `~/.claude/skills/gstack` vs vendored in your project at `.claude/skills/gstack`), runs the upgrade, syncs both copies if you have dual installs, and shows you what changed.
+Keep gemstack current with one command. It detects your install type (global at `~/.gemini/skills/gemstack` vs vendored in your project at `.gemini/skills/gemstack`), runs the upgrade, syncs both copies if you have dual installs, and shows you what changed.
 
 ```
-You:   /gstack-upgrade
+You:   /gemstack-upgrade
 
-Claude: Current version: 0.7.4
+Gemini: Current version: 0.7.4
         Latest version: 0.8.2
 
         What's new:
@@ -792,7 +792,7 @@ Claude: Current version: 0.7.4
         Upgraded to 0.8.2. Both global and project installs synced.
 ```
 
-Set `auto_upgrade: true` in `~/.gstack/config.yaml` to skip the prompt entirely — gstack upgrades silently at the start of each session when a new version is available.
+Set `auto_upgrade: true` in `~/.gemstack/config.yaml` to skip the prompt entirely — gemstack upgrades silently at the start of each session when a new version is available.
 
 ---
 
@@ -802,13 +802,13 @@ Set `auto_upgrade: true` in `~/.gstack/config.yaml` to skip the prompt entirely 
 
 ### Setup
 
-Install Greptile on your GitHub repo at [greptile.com](https://greptile.com) — it takes about 30 seconds. Once it's reviewing your PRs, gstack picks up its comments automatically. No additional configuration.
+Install Greptile on your GitHub repo at [greptile.com](https://greptile.com) — it takes about 30 seconds. Once it's reviewing your PRs, gemstack picks up its comments automatically. No additional configuration.
 
 ### How it works
 
 The problem with any automated reviewer is triage. Greptile is good, but not every comment is a real issue. Some are false positives. Some flag things you already fixed three commits ago. Without a triage layer, the comments pile up and you start ignoring them — which defeats the purpose.
 
-gstack solves this. `/review` and `/ship` are now Greptile-aware. They read Greptile's comments, classify each one, and take action:
+gemstack solves this. `/review` and `/ship` are now Greptile-aware. They read Greptile's comments, classify each one, and take action:
 
 - **Valid issues** get added to the critical findings and fixed before shipping
 - **Already-fixed issues** get an auto-reply acknowledging the catch
@@ -818,14 +818,14 @@ The result is a two-layer review: Greptile catches things asynchronously on the 
 
 ### Learning from history
 
-Every false positive you confirm gets saved to `~/.gstack/greptile-history.md`. Future runs auto-skip known FP patterns for your codebase. And `/retro` tracks Greptile's batting average over time — so you can see whether the signal-to-noise ratio is improving.
+Every false positive you confirm gets saved to `~/.gemstack/greptile-history.md`. Future runs auto-skip known FP patterns for your codebase. And `/retro` tracks Greptile's batting average over time — so you can see whether the signal-to-noise ratio is improving.
 
 ### Example
 
 ```
 You:   /ship
 
-Claude: [syncs main, runs tests, pre-landing review...]
+Gemini: [syncs main, runs tests, pre-landing review...]
 
         Greptile found 3 comments on this PR:
 
@@ -848,7 +848,7 @@ Claude: [syncs main, runs tests, pre-landing review...]
 
 You:    A
 
-Claude: Replied to Greptile. All tests pass.
+Gemini: Replied to Greptile. All tests pass.
         PR: github.com/you/app/pull/42
 ```
 

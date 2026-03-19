@@ -1,20 +1,20 @@
-# Contributing to gstack
+# Contributing to gemstack
 
-Thanks for wanting to make gstack better. Whether you're fixing a typo in a skill prompt or building an entirely new workflow, this guide will get you up and running fast.
+Thanks for wanting to make gemstack better. Whether you're fixing a typo in a skill prompt or building an entirely new workflow, this guide will get you up and running fast.
 
 ## Quick start
 
-gstack skills are Markdown files that Claude Code discovers from a `skills/` directory. Normally they live at `~/.claude/skills/gstack/` (your global install). But when you're developing gstack itself, you want Claude Code to use the skills *in your working tree* — so edits take effect instantly without copying or deploying anything.
+gemstack skills are Markdown files that Gemini CLI discovers from a `skills/` directory. Normally they live at `~/.gemini/skills/gemstack/` (your global install). But when you're developing gemstack itself, you want Gemini CLI to use the skills *in your working tree* — so edits take effect instantly without copying or deploying anything.
 
-That's what dev mode does. It symlinks your repo into the local `.claude/skills/` directory so Claude Code reads skills straight from your checkout.
+That's what dev mode does. It symlinks your repo into the local `.gemini/skills/` directory so Gemini CLI reads skills straight from your checkout.
 
 ```bash
-git clone <repo> && cd gstack
+git clone <repo> && cd gemstack
 bun install                    # install dependencies
 bin/dev-setup                  # activate dev mode
 ```
 
-Now edit any `SKILL.md`, invoke it in Claude Code (e.g. `/review`), and see your changes live. When you're done developing:
+Now edit any `SKILL.md`, invoke it in Gemini CLI (e.g. `/review`), and see your changes live. When you're done developing:
 
 ```bash
 bin/dev-teardown               # deactivate — back to your global install
@@ -22,55 +22,55 @@ bin/dev-teardown               # deactivate — back to your global install
 
 ## Contributor mode
 
-Contributor mode turns gstack into a self-improving tool. Enable it and Claude Code
-will periodically reflect on its gstack experience — rating it 0-10 at the end of
+Contributor mode turns gemstack into a self-improving tool. Enable it and Gemini CLI
+will periodically reflect on its gemstack experience — rating it 0-10 at the end of
 each major workflow step. When something isn't a 10, it thinks about why and files
-a report to `~/.gstack/contributor-logs/` with what happened, repro steps, and what
+a report to `~/.gemstack/contributor-logs/` with what happened, repro steps, and what
 would make it better.
 
 ```bash
-~/.claude/skills/gstack/bin/gstack-config set gstack_contributor true
+~/.gemini/skills/gemstack/bin/gemstack-config set gemstack_contributor true
 ```
 
 The logs are for **you**. When something bugs you enough to fix, the report is
-already written. Fork gstack, symlink your fork into the project where you hit
+already written. Fork gemstack, symlink your fork into the project where you hit
 the issue, fix it, and open a PR.
 
 ### The contributor workflow
 
-1. **Use gstack normally** — contributor mode reflects and logs issues automatically
-2. **Check your logs:** `ls ~/.gstack/contributor-logs/`
-3. **Fork and clone gstack** (if you haven't already)
+1. **Use gemstack normally** — contributor mode reflects and logs issues automatically
+2. **Check your logs:** `ls ~/.gemstack/contributor-logs/`
+3. **Fork and clone gemstack** (if you haven't already)
 4. **Symlink your fork into the project where you hit the bug:**
    ```bash
-   # In your core project (the one where gstack annoyed you)
-   ln -sfn /path/to/your/gstack-fork .claude/skills/gstack
-   cd .claude/skills/gstack && bun install && bun run build
+   # In your core project (the one where gemstack annoyed you)
+   ln -sfn /path/to/your/gemstack-fork .gemini/skills/gemstack
+   cd .gemini/skills/gemstack && bun install && bun run build
    ```
 5. **Fix the issue** — your changes are live immediately in this project
-6. **Test by actually using gstack** — do the thing that annoyed you, verify it's fixed
+6. **Test by actually using gemstack** — do the thing that annoyed you, verify it's fixed
 7. **Open a PR from your fork**
 
-This is the best way to contribute: fix gstack while doing your real work, in the
+This is the best way to contribute: fix gemstack while doing your real work, in the
 project where you actually felt the pain.
 
 ### Session awareness
 
-When you have 3+ gstack sessions open simultaneously, every question tells you which project, which branch, and what's happening. No more staring at a question thinking "wait, which window is this?" The format is consistent across all 15 skills.
+When you have 3+ gemstack sessions open simultaneously, every question tells you which project, which branch, and what's happening. No more staring at a question thinking "wait, which window is this?" The format is consistent across all 15 skills.
 
-## Working on gstack inside the gstack repo
+## Working on gemstack inside the gemstack repo
 
-When you're editing gstack skills and want to test them by actually using gstack
-in the same repo, `bin/dev-setup` wires this up. It creates `.claude/skills/`
-symlinks (gitignored) pointing back to your working tree, so Claude Code uses
+When you're editing gemstack skills and want to test them by actually using gemstack
+in the same repo, `bin/dev-setup` wires this up. It creates `.gemini/skills/`
+symlinks (gitignored) pointing back to your working tree, so Gemini CLI uses
 your local edits instead of the global install.
 
 ```
-gstack/                          <- your working tree
-├── .claude/skills/              <- created by dev-setup (gitignored)
-│   ├── gstack -> ../../         <- symlink back to repo root
-│   ├── review -> gstack/review
-│   ├── ship -> gstack/ship
+gemstack/                          <- your working tree
+├── .gemini/skills/              <- created by dev-setup (gitignored)
+│   ├── gemstack -> ../../         <- symlink back to repo root
+│   ├── review -> gemstack/review
+│   ├── ship -> gemstack/ship
 │   └── ...                      <- one symlink per skill
 ├── review/
 │   └── SKILL.md                 <- edit this, test with /review
@@ -91,7 +91,7 @@ bin/dev-setup
 # 2. Edit a skill
 vim review/SKILL.md
 
-# 3. Test it in Claude Code — changes are live
+# 3. Test it in Gemini CLI — changes are live
 #    > /review
 
 # 4. Editing browse source? Rebuild the binary
@@ -108,7 +108,7 @@ bin/dev-teardown
 ```bash
 # 1. Copy .env.example and add your API key
 cp .env.example .env
-# Edit .env → set ANTHROPIC_API_KEY=sk-ant-...
+# Edit .env → set GEMINI_API_KEY=sk-ant-...
 
 # 2. Install deps (if you haven't already)
 bun install
@@ -121,13 +121,13 @@ Bun auto-loads `.env` — no extra config. Conductor workspaces inherit `.env` f
 | Tier | Command | Cost | What it tests |
 |------|---------|------|---------------|
 | 1 — Static | `bun test` | Free | Command validation, snapshot flags, SKILL.md correctness, TODOS-format.md refs, observability unit tests |
-| 2 — E2E | `bun run test:e2e` | ~$3.85 | Full skill execution via `claude -p` subprocess |
+| 2 — E2E | `bun run test:e2e` | ~$3.85 | Full skill execution via `gemini -p` subprocess |
 | 3 — LLM eval | `bun run test:evals` | ~$0.15 standalone | LLM-as-judge scoring of generated SKILL.md docs |
 | 2+3 | `bun run test:evals` | ~$4 combined | E2E + LLM-as-judge (runs both) |
 
 ```bash
 bun test                     # Tier 1 only (runs on every commit, <5s)
-bun run test:e2e             # Tier 2: E2E only (needs EVALS=1, can't run inside Claude Code)
+bun run test:e2e             # Tier 2: E2E only (needs EVALS=1, can't run inside Gemini CLI)
 bun run test:evals           # Tier 2 + 3 combined (~$4/run)
 ```
 
@@ -139,17 +139,17 @@ Runs automatically with `bun test`. No API keys needed.
 - **Skill validation tests** (`test/skill-validation.test.ts`) — Validates that SKILL.md files reference only real commands and flags, and that command descriptions meet quality thresholds.
 - **Generator tests** (`test/gen-skill-docs.test.ts`) — Tests the template system: verifies placeholders resolve correctly, output includes value hints for flags (e.g. `-d <N>` not just `-d`), enriched descriptions for key commands (e.g. `is` lists valid states, `press` lists key examples).
 
-### Tier 2: E2E via `claude -p` (~$3.85/run)
+### Tier 2: E2E via `gemini -p` (~$3.85/run)
 
-Spawns `claude -p` as a subprocess with `--output-format stream-json --verbose`, streams NDJSON for real-time progress, and scans for browse errors. This is the closest thing to "does this skill actually work end-to-end?"
+Spawns `gemini -p` as a subprocess with `--output-format stream-json --verbose`, streams NDJSON for real-time progress, and scans for browse errors. This is the closest thing to "does this skill actually work end-to-end?"
 
 ```bash
-# Must run from a plain terminal — can't nest inside Claude Code or Conductor
+# Must run from a plain terminal — can't nest inside Gemini CLI or Conductor
 EVALS=1 bun test test/skill-e2e.test.ts
 ```
 
 - Gated by `EVALS=1` env var (prevents accidental expensive runs)
-- Auto-skips if running inside Claude Code (`claude -p` can't nest)
+- Auto-skips if running inside Gemini CLI (`gemini -p` can't nest)
 - API connectivity pre-check — fails fast on ConnectionRefused before burning budget
 - Real-time progress to stderr: `[Ns] turn T tool #C: Name(...)`
 - Saves full NDJSON transcripts and failure JSON for debugging
@@ -157,14 +157,14 @@ EVALS=1 bun test test/skill-e2e.test.ts
 
 ### E2E observability
 
-When E2E tests run, they produce machine-readable artifacts in `~/.gstack-dev/`:
+When E2E tests run, they produce machine-readable artifacts in `~/.gemstack-dev/`:
 
 | Artifact | Path | Purpose |
 |----------|------|---------|
 | Heartbeat | `e2e-live.json` | Current test status (updated per tool call) |
 | Partial results | `evals/_partial-e2e.json` | Completed tests (survives kills) |
 | Progress log | `e2e-runs/{runId}/progress.log` | Append-only text log |
-| NDJSON transcripts | `e2e-runs/{runId}/{test}.ndjson` | Raw `claude -p` output per test |
+| NDJSON transcripts | `e2e-runs/{runId}/{test}.ndjson` | Raw `gemini -p` output per test |
 | Failure JSON | `e2e-runs/{runId}/{test}-failure.json` | Diagnostic data on failure |
 
 **Live dashboard:** Run `bun run eval:watch` in a second terminal to see a live dashboard showing completed tests, the currently running test, and cost. Use `--tail` to also show the last 10 lines of progress.log.
@@ -179,11 +179,11 @@ bun run eval:summary         # aggregate stats + per-test efficiency averages ac
 
 **Eval comparison commentary:** `eval:compare` generates natural-language Takeaway sections interpreting what changed between runs — flagging regressions, noting improvements, calling out efficiency gains (fewer turns, faster, cheaper), and producing an overall summary. This is driven by `generateCommentary()` in `eval-store.ts`.
 
-Artifacts are never cleaned up — they accumulate in `~/.gstack-dev/` for post-mortem debugging and trend analysis.
+Artifacts are never cleaned up — they accumulate in `~/.gemstack-dev/` for post-mortem debugging and trend analysis.
 
 ### Tier 3: LLM-as-judge (~$0.15/run)
 
-Uses Claude Sonnet to score generated SKILL.md docs on three dimensions:
+Uses Gemini Sonnet to score generated SKILL.md docs on three dimensions:
 
 - **Clarity** — Can an AI agent understand the instructions without ambiguity?
 - **Completeness** — Are all commands, flags, and usage patterns documented?
@@ -192,12 +192,12 @@ Uses Claude Sonnet to score generated SKILL.md docs on three dimensions:
 Each dimension is scored 1-5. Threshold: every dimension must score **≥ 4**. There's also a regression test that compares generated docs against the hand-maintained baseline from `origin/main` — generated must score equal or higher.
 
 ```bash
-# Needs ANTHROPIC_API_KEY in .env — included in bun run test:evals
+# Needs GEMINI_API_KEY in .env — included in bun run test:evals
 ```
 
-- Uses `claude-sonnet-4-6` for scoring stability
+- Uses `gemini-2.0-flash` for scoring stability
 - Tests live in `test/skill-llm-eval.test.ts`
-- Calls the Anthropic API directly (not `claude -p`), so it works from anywhere including inside Claude Code
+- Calls the Anthropic API directly (not `gemini -p`), so it works from anywhere including inside Gemini CLI
 
 ### CI
 
@@ -223,63 +223,63 @@ bun run skill:check
 bun run dev:skill
 ```
 
-For template authoring best practices (natural language over bash-isms, dynamic branch detection, `{{BASE_BRANCH_DETECT}}` usage), see CLAUDE.md's "Writing SKILL templates" section.
+For template authoring best practices (natural language over bash-isms, dynamic branch detection, `{{BASE_BRANCH_DETECT}}` usage), see GEMINI.md's "Writing SKILL templates" section.
 
 To add a browse command, add it to `browse/src/commands.ts`. To add a snapshot flag, add it to `SNAPSHOT_FLAGS` in `browse/src/snapshot.ts`. Then rebuild.
 
 ## Conductor workspaces
 
-If you're using [Conductor](https://conductor.build) to run multiple Claude Code sessions in parallel, `conductor.json` wires up workspace lifecycle automatically:
+If you're using [Conductor](https://conductor.build) to run multiple Gemini CLI sessions in parallel, `conductor.json` wires up workspace lifecycle automatically:
 
 | Hook | Script | What it does |
 |------|--------|-------------|
 | `setup` | `bin/dev-setup` | Copies `.env` from main worktree, installs deps, symlinks skills |
-| `archive` | `bin/dev-teardown` | Removes skill symlinks, cleans up `.claude/` directory |
+| `archive` | `bin/dev-teardown` | Removes skill symlinks, cleans up `.gemini/` directory |
 
 When Conductor creates a new workspace, `bin/dev-setup` runs automatically. It detects the main worktree (via `git worktree list`), copies your `.env` so API keys carry over, and sets up dev mode — no manual steps needed.
 
-**First-time setup:** Put your `ANTHROPIC_API_KEY` in `.env` in the main repo (see `.env.example`). Every Conductor workspace inherits it automatically.
+**First-time setup:** Put your `GEMINI_API_KEY` in `.env` in the main repo (see `.env.example`). Every Conductor workspace inherits it automatically.
 
 ## Things to know
 
 - **SKILL.md files are generated.** Edit the `.tmpl` template, not the `.md`. Run `bun run gen:skill-docs` to regenerate.
 - **TODOS.md is the unified backlog.** Organized by skill/component with P0-P4 priorities. `/ship` auto-detects completed items. All planning/review/retro skills read it for context.
 - **Browse source changes need a rebuild.** If you touch `browse/src/*.ts`, run `bun run build`.
-- **Dev mode shadows your global install.** Project-local skills take priority over `~/.claude/skills/gstack`. `bin/dev-teardown` restores the global one.
+- **Dev mode shadows your global install.** Project-local skills take priority over `~/.gemini/skills/gemstack`. `bin/dev-teardown` restores the global one.
 - **Conductor workspaces are independent.** Each workspace is its own git worktree. `bin/dev-setup` runs automatically via `conductor.json`.
 - **`.env` propagates across worktrees.** Set it once in the main repo, all Conductor workspaces get it.
-- **`.claude/skills/` is gitignored.** The symlinks never get committed.
+- **`.gemini/skills/` is gitignored.** The symlinks never get committed.
 
 ## Testing your changes in a real project
 
-**This is the recommended way to develop gstack.** Symlink your gstack checkout
+**This is the recommended way to develop gemstack.** Symlink your gemstack checkout
 into the project where you actually use it, so your changes are live while you
 do real work:
 
 ```bash
 # In your core project
-ln -sfn /path/to/your/gstack-checkout .claude/skills/gstack
-cd .claude/skills/gstack && bun install && bun run build
+ln -sfn /path/to/your/gemstack-checkout .gemini/skills/gemstack
+cd .gemini/skills/gemstack && bun install && bun run build
 ```
 
-Now every gstack skill invocation in this project uses your working tree. Edit a
+Now every gemstack skill invocation in this project uses your working tree. Edit a
 template, run `bun run gen:skill-docs`, and the next `/review` or `/qa` call picks
 it up immediately.
 
 **To go back to the stable global install**, just remove the symlink:
 
 ```bash
-rm .claude/skills/gstack
+rm .gemini/skills/gemstack
 ```
 
-Claude Code falls back to `~/.claude/skills/gstack/` automatically.
+Gemini CLI falls back to `~/.gemini/skills/gemstack/` automatically.
 
 ### Alternative: point your global install at a branch
 
 If you don't want per-project symlinks, you can switch the global install:
 
 ```bash
-cd ~/.claude/skills/gstack
+cd ~/.gemini/skills/gemstack
 git fetch origin
 git checkout origin/<branch>
 bun install && bun run build
