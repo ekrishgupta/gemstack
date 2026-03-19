@@ -52,8 +52,8 @@ ls src/ app/ pages/ components/ 2>/dev/null | head -30
 Look for office-hours output:
 
 ```bash
-source <(~/.claude/skills/gstack/bin/gstack-slug 2>/dev/null)
-ls ~/.gstack/projects/$SLUG/*office-hours* 2>/dev/null | head -5
+source <(~/.gemini/skills/gemstack/bin/gemstack-slug 2>/dev/null)
+ls ~/.gemstack/projects/$SLUG/*office-hours* 2>/dev/null | head -5
 ls .context/*office-hours* .context/attachments/*office-hours* 2>/dev/null | head -5
 ```
 
@@ -333,7 +333,7 @@ Write `DESIGN.md` to the repo root with this structure:
 | [today] | Initial design system created | Created by /design-consultation based on [product context / research] |
 ```
 
-**Update CLAUDE.md** (or create it if it doesn't exist) — append this section:
+**Update GEMINI.md** (or create it if it doesn't exist) — append this section:
 
 ```markdown
 ## Design System
@@ -346,7 +346,7 @@ In QA mode, flag any code that doesn't match DESIGN.md.
 **AskUserQuestion Q-final — show summary and confirm:**
 
 List all decisions. Flag any that used agent defaults without explicit user confirmation (the user should know what they're shipping). Options:
-- A) Ship it — write DESIGN.md and CLAUDE.md
+- A) Ship it — write DESIGN.md and GEMINI.md
 - B) I want to change something (specify what)
 - C) Start over
 

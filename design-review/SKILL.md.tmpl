@@ -74,7 +74,7 @@ After the user chooses, execute their choice (commit or stash), then continue wi
 **Create output directories:**
 
 ```bash
-REPORT_DIR=".gstack/design-reports"
+REPORT_DIR=".gemstack/design-reports"
 mkdir -p "$REPORT_DIR/screenshots"
 ```
 
@@ -91,7 +91,7 @@ Record baseline design score and AI slop score at end of Phase 6.
 ## Output Structure
 
 ```
-.gstack/design-reports/
+.gemstack/design-reports/
 ├── design-audit-{domain}-{YYYY-MM-DD}.md    # Structured report
 ├── screenshots/
 │   ├── first-impression.png                  # Phase 1
@@ -216,13 +216,13 @@ After all fixes are applied:
 
 Write the report to both local and project-scoped locations:
 
-**Local:** `.gstack/design-reports/design-audit-{domain}-{YYYY-MM-DD}.md`
+**Local:** `.gemstack/design-reports/design-audit-{domain}-{YYYY-MM-DD}.md`
 
 **Project-scoped:**
 ```bash
-source <(~/.claude/skills/gstack/bin/gstack-slug 2>/dev/null) && mkdir -p ~/.gstack/projects/$SLUG
+source <(~/.gemini/skills/gemstack/bin/gemstack-slug 2>/dev/null) && mkdir -p ~/.gemstack/projects/$SLUG
 ```
-Write to `~/.gstack/projects/{slug}/{user}-{branch}-design-audit-{datetime}.md`
+Write to `~/.gemstack/projects/{slug}/{user}-{branch}-design-audit-{datetime}.md`
 
 **Per-finding additions** (beyond standard design audit report):
 - Fix Status: verified / best-effort / reverted / deferred

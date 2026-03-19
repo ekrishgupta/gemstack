@@ -1,5 +1,5 @@
 ---
-name: gstack
+name: gemstack
 version: 1.1.0
 description: |
   Fast headless browser for QA testing and site dogfooding. Navigate any URL, interact with
@@ -8,7 +8,7 @@ description: |
   ~100ms per command. Use when you need to test a feature, verify a deployment, dogfood a
   user flow, or file a bug with evidence.
 
-  gstack also includes development workflow skills. When you notice the user is at
+  gemstack also includes development workflow skills. When you notice the user is at
   these stages, suggest the appropriate skill:
   - Brainstorming a new idea → suggest /office-hours
   - Reviewing a plan (strategy) → suggest /plan-ceo-review
@@ -27,17 +27,17 @@ description: |
   - Want to scope edits to one module/directory → suggest /freeze
   - Maximum safety mode (destructive warnings + edit restrictions) → suggest /guard
   - Removing edit restrictions → suggest /unfreeze
-  - Upgrading gstack to latest version → suggest /gstack-upgrade
+  - Upgrading gemstack to latest version → suggest /gemstack-upgrade
 
   If the user pushes back on skill suggestions ("stop suggesting things",
   "I don't need suggestions", "too aggressive"):
   1. Stop suggesting for the rest of this session
-  2. Run: gstack-config set proactive false
+  2. Run: gemstack-config set proactive false
   3. Say: "Got it — I'll stop suggesting skills. Just tell me to be proactive
      again if you change your mind."
 
   If the user says "be proactive again" or "turn on suggestions":
-  1. Run: gstack-config set proactive true
+  1. Run: gemstack-config set proactive true
   2. Say: "Proactive suggestions are back on."
 allowed-tools:
   - Bash
@@ -48,11 +48,11 @@ allowed-tools:
 
 {{PREAMBLE}}
 
-If `PROACTIVE` is `false`: do NOT proactively suggest other gstack skills during this session.
+If `PROACTIVE` is `false`: do NOT proactively suggest other gemstack skills during this session.
 Only run skills the user explicitly invokes. This preference persists across sessions via
-`gstack-config`.
+`gemstack-config`.
 
-# gstack browse: QA Testing & Dogfooding
+# gemstack browse: QA Testing & Dogfooding
 
 Persistent headless Chromium. First call auto-starts (~3s), then ~100-200ms per command.
 Auto-shuts down after 30 min idle. State persists between calls (cookies, tabs, sessions).
@@ -62,7 +62,7 @@ Auto-shuts down after 30 min idle. State persists between calls (cookies, tabs, 
 ## IMPORTANT
 
 - Use the compiled binary via Bash: `$B <command>`
-- NEVER use `mcp__claude-in-chrome__*` tools. They are slow and unreliable.
+- NEVER use `mcp__gemini-in-chrome__*` tools. They are slow and unreliable.
 - Browser persists between calls — cookies, login sessions, and tabs carry over.
 - Dialogs (alert/confirm/prompt) are auto-accepted by default — no browser lockup.
 - **Show screenshots:** After `$B screenshot`, `$B snapshot -a -o`, or `$B responsive`, always use the Read tool on the output PNG(s) so the user can see them. Without this, screenshots are invisible.

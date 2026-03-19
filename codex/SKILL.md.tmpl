@@ -59,8 +59,8 @@ Parse the user's input to determine which mode to run:
      C) Something else — I'll provide a prompt
      ```
    - If no diff, check for plan files scoped to the current project:
-     `ls -t ~/.claude/plans/*.md 2>/dev/null | xargs grep -l "$(basename $(pwd))" 2>/dev/null | head -1`
-     If no project-scoped match, fall back to: `ls -t ~/.claude/plans/*.md 2>/dev/null | head -1`
+     `ls -t ~/.gemini/plans/*.md 2>/dev/null | xargs grep -l "$(basename $(pwd))" 2>/dev/null | head -1`
+     If no project-scoped match, fall back to: `ls -t ~/.gemini/plans/*.md 2>/dev/null | head -1`
      but warn the user: "Note: this plan may be from a different project."
    - If a plan file exists, offer to review it
    - Otherwise, ask: "What would you like to ask Codex?"
@@ -113,20 +113,20 @@ or
 GATE: FAIL (N critical findings)
 ```
 
-6. **Cross-model comparison:** If `/review` (Claude's own review) was already run
+6. **Cross-model comparison:** If `/review` (Gemini's own review) was already run
    earlier in this conversation, compare the two sets of findings:
 
 ```
 CROSS-MODEL ANALYSIS:
-  Both found: [findings that overlap between Claude and Codex]
+  Both found: [findings that overlap between Gemini and Codex]
   Only Codex found: [findings unique to Codex]
-  Only Claude found: [findings unique to Claude's /review]
+  Only Gemini found: [findings unique to Gemini's /review]
   Agreement rate: X% (N/M total unique findings overlap)
 ```
 
 7. Persist the review result:
 ```bash
-~/.claude/skills/gstack/bin/gstack-review-log '{"skill":"codex-review","timestamp":"TIMESTAMP","status":"STATUS","gate":"GATE","findings":N}'
+~/.gemini/skills/gemstack/bin/gemstack-review-log '{"skill":"codex-review","timestamp":"TIMESTAMP","status":"STATUS","gate":"GATE","findings":N}'
 ```
 
 Substitute: TIMESTAMP (ISO 8601), STATUS ("clean" if PASS, "issues_found" if FAIL),
@@ -223,9 +223,9 @@ TMPERR=$(mktemp /tmp/codex-err-XXXXXX.txt)
 3. **Plan review auto-detection:** If the user's prompt is about reviewing a plan,
 or if plan files exist and the user said `/codex` with no arguments:
 ```bash
-ls -t ~/.claude/plans/*.md 2>/dev/null | xargs grep -l "$(basename $(pwd))" 2>/dev/null | head -1
+ls -t ~/.gemini/plans/*.md 2>/dev/null | xargs grep -l "$(basename $(pwd))" 2>/dev/null | head -1
 ```
-If no project-scoped match, fall back to `ls -t ~/.claude/plans/*.md 2>/dev/null | head -1`
+If no project-scoped match, fall back to `ls -t ~/.gemini/plans/*.md 2>/dev/null | head -1`
 but warn: "Note: this plan may be from a different project — verify before sending to Codex."
 Read the plan file and prepend the persona to the user's prompt:
 "You are a brutally honest technical reviewer. Review this plan for: logical gaps and
@@ -299,7 +299,7 @@ Session saved — run /codex again to continue this conversation.
 
 7. After presenting, note any points where Codex's analysis differs from your own
    understanding. If there is a disagreement, flag it:
-   "Note: Claude Code disagrees on X because Y."
+   "Note: Gemini CLI disagrees on X because Y."
 
 ---
 
@@ -350,7 +350,7 @@ If token count is not available, display: `Tokens: unknown`
 - **Never modify files.** This skill is read-only. Codex runs in read-only sandbox mode.
 - **Present output verbatim.** Do not truncate, summarize, or editorialize Codex's output
   before showing it. Show it in full inside the CODEX SAYS block.
-- **Add synthesis after, not instead of.** Any Claude commentary comes after the full output.
+- **Add synthesis after, not instead of.** Any Gemini commentary comes after the full output.
 - **5-minute timeout** on all Bash calls to codex (`timeout: 300000`).
 - **No double-reviewing.** If the user already ran `/review`, Codex provides a second
-  independent opinion. Do not re-run Claude Code's own review.
+  independent opinion. Do not re-run Gemini CLI's own review.
