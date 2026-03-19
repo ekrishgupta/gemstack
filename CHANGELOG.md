@@ -411,7 +411,7 @@ Read the philosophy: https://garryslist.org/posts/boil-the-ocean
 - **Shared `review/TODOS-format.md`** — canonical TODO item format referenced by `/ship` and `/plan-ceo-review` to prevent format drift (DRY).
 - **Greptile 2-tier reply system** — Tier 1 (friendly, inline diff + explanation) for first responses; Tier 2 (firm, full evidence chain + re-rank request) when Greptile re-flags after a prior reply.
 - **Greptile reply templates** — structured templates in `greptile-triage.md` for fixes (inline diff), already-fixed (what was done), and false positives (evidence + suggested re-rank). Replaces vague one-line replies.
-- **Greptile escalation detection** — explicit algorithm to detect prior GStack replies on comment threads and auto-escalate to Tier 2.
+- **Greptile escalation detection** — explicit algorithm to detect prior Gemstack replies on comment threads and auto-escalate to Tier 2.
 - **Greptile severity re-ranking** — replies now include `**Suggested re-rank:**` when Greptile miscategorizes issue severity.
 - Static validation tests for `TODOS-format.md` references across skills.
 

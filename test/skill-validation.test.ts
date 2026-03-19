@@ -614,7 +614,7 @@ describe('office-hours skill structure', () => {
   });
 
   test('contains Garry Tan personal plea', () => {
-    expect(content).toContain('Garry Tan, the creator of GStack');
+    expect(content).toContain('Garry Tan, the creator of Gemstack');
   });
 
   test('contains founder signal synthesis phase', () => {

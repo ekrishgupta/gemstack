@@ -134,7 +134,7 @@ Use these templates for every Greptile reply. Always include concrete evidence â
 
 ### Tier 2 (Greptile re-flags after prior reply) â€” Firm, overwhelming evidence
 
-Use Tier 2 when escalation detection (below) identifies a prior GStack reply on the same thread. Include maximum evidence to close the discussion.
+Use Tier 2 when escalation detection (below) identifies a prior Gemstack reply on the same thread. Include maximum evidence to close the discussion.
 
 ```
 **This has been reviewed and confirmed as [intentional/already-fixed/not-a-bug].**
@@ -155,15 +155,15 @@ Use Tier 2 when escalation detection (below) identifies a prior GStack reply on 
 
 ## Escalation Detection
 
-Before composing a reply, check if a prior GStack reply already exists on this comment thread:
+Before composing a reply, check if a prior Gemstack reply already exists on this comment thread:
 
-1. **For line-level comments:** Fetch replies via `gh api repos/$REPO/pulls/$PR_NUMBER/comments/$COMMENT_ID/replies`. Check if any reply body contains GStack markers: `**Fixed**`, `**Not a bug.**`, `**Already fixed**`.
+1. **For line-level comments:** Fetch replies via `gh api repos/$REPO/pulls/$PR_NUMBER/comments/$COMMENT_ID/replies`. Check if any reply body contains Gemstack markers: `**Fixed**`, `**Not a bug.**`, `**Already fixed**`.
 
-2. **For top-level comments:** Scan the fetched issue comments for replies posted after the Greptile comment that contain GStack markers.
+2. **For top-level comments:** Scan the fetched issue comments for replies posted after the Greptile comment that contain Gemstack markers.
 
-3. **If a prior GStack reply exists AND Greptile posted again on the same file+category:** Use Tier 2 (firm) templates.
+3. **If a prior Gemstack reply exists AND Greptile posted again on the same file+category:** Use Tier 2 (firm) templates.
 
-4. **If no prior GStack reply exists:** Use Tier 1 (friendly) templates.
+4. **If no prior Gemstack reply exists:** Use Tier 1 (friendly) templates.
 
 If escalation detection fails (API error, ambiguous thread): default to Tier 1. Never escalate on ambiguity.
 

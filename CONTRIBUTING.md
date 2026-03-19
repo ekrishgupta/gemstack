@@ -197,7 +197,7 @@ Each dimension is scored 1-5. Threshold: every dimension must score **≥ 4**. T
 
 - Uses `gemini-2.0-flash` for scoring stability
 - Tests live in `test/skill-llm-eval.test.ts`
-- Calls the Anthropic API directly (not `gemini -p`), so it works from anywhere including inside Gemini CLI
+- Calls the Gemini API directly (not `gemini -p`), so it works from anywhere including inside Gemini CLI
 
 ### CI
 

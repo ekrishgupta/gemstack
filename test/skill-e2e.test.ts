@@ -158,14 +158,14 @@ function dumpOutcomeDiagnostic(dir: string, label: string, report: string, judge
   } catch { /* non-fatal */ }
 }
 
-// Fail fast if Anthropic API is unreachable — don't burn through 13 tests getting ConnectionRefused
+// Fail fast if Gemini API is unreachable — don't burn through 13 tests getting ConnectionRefused
 if (evalsEnabled) {
   const check = spawnSync('sh', ['-c', 'echo "ping" | gemini -p --max-turns 1 --output-format stream-json --verbose --dangerously-skip-permissions'], {
     stdio: 'pipe', timeout: 30_000,
   });
   const output = check.stdout?.toString() || '';
   if (output.includes('ConnectionRefused') || output.includes('Unable to connect')) {
-    throw new Error('Anthropic API unreachable — aborting E2E suite. Fix connectivity and retry.');
+    throw new Error('Gemini API unreachable — aborting E2E suite. Fix connectivity and retry.');
   }
 }
 
@@ -1897,40 +1897,40 @@ describeIfSelected('gemstack-upgrade E2E', ['gemstack-upgrade-happy-path'], () =
     run('git', ['config', 'user.name', 'Test'], upgradeDir);
 
     // Create mock gemstack install directory (local-git type)
-    const mockGstack = path.join(upgradeDir, '.gemini', 'skills', 'gemstack');
-    fs.mkdirSync(mockGstack, { recursive: true });
+    const mockGemstack = path.join(upgradeDir, '.gemini', 'skills', 'gemstack');
+    fs.mkdirSync(mockGemstack, { recursive: true });
 
     // Init as a git repo
-    run('git', ['init'], mockGstack);
-    run('git', ['config', 'user.email', 'test@test.com'], mockGstack);
-    run('git', ['config', 'user.name', 'Test'], mockGstack);
+    run('git', ['init'], mockGemstack);
+    run('git', ['config', 'user.email', 'test@test.com'], mockGemstack);
+    run('git', ['config', 'user.name', 'Test'], mockGemstack);
 
     // Create bare remote
     run('git', ['init', '--bare'], remoteDir);
-    run('git', ['remote', 'add', 'origin', remoteDir], mockGstack);
+    run('git', ['remote', 'add', 'origin', remoteDir], mockGemstack);
 
     // Write old version files
-    fs.writeFileSync(path.join(mockGstack, 'VERSION'), '0.5.0\n');
-    fs.writeFileSync(path.join(mockGstack, 'CHANGELOG.md'),
+    fs.writeFileSync(path.join(mockGemstack, 'VERSION'), '0.5.0\n');
+    fs.writeFileSync(path.join(mockGemstack, 'CHANGELOG.md'),
       '# Changelog\n\n## 0.5.0 — 2026-03-01\n\n- Initial release\n');
-    fs.writeFileSync(path.join(mockGstack, 'setup'),
+    fs.writeFileSync(path.join(mockGemstack, 'setup'),
       '#!/bin/bash\necho "Setup completed"\n', { mode: 0o755 });
 
     // Initial commit + push
-    run('git', ['add', '.'], mockGstack);
-    run('git', ['commit', '-m', 'initial'], mockGstack);
-    run('git', ['push', '-u', 'origin', 'HEAD:main'], mockGstack);
+    run('git', ['add', '.'], mockGemstack);
+    run('git', ['commit', '-m', 'initial'], mockGemstack);
+    run('git', ['push', '-u', 'origin', 'HEAD:main'], mockGemstack);
 
     // Create new version (simulate upstream release)
-    fs.writeFileSync(path.join(mockGstack, 'VERSION'), '0.6.0\n');
-    fs.writeFileSync(path.join(mockGstack, 'CHANGELOG.md'),
+    fs.writeFileSync(path.join(mockGemstack, 'VERSION'), '0.6.0\n');
+    fs.writeFileSync(path.join(mockGemstack, 'CHANGELOG.md'),
       '# Changelog\n\n## 0.6.0 — 2026-03-15\n\n- New feature: interactive design review\n- Fix: snapshot flag validation\n\n## 0.5.0 — 2026-03-01\n\n- Initial release\n');
-    run('git', ['add', '.'], mockGstack);
-    run('git', ['commit', '-m', 'release 0.6.0'], mockGstack);
-    run('git', ['push', 'origin', 'HEAD:main'], mockGstack);
+    run('git', ['add', '.'], mockGemstack);
+    run('git', ['commit', '-m', 'release 0.6.0'], mockGemstack);
+    run('git', ['push', 'origin', 'HEAD:main'], mockGemstack);
 
     // Reset working copy back to old version
-    run('git', ['reset', '--hard', 'HEAD~1'], mockGstack);
+    run('git', ['reset', '--hard', 'HEAD~1'], mockGemstack);
 
     // Copy gemstack-upgrade skill
     fs.mkdirSync(path.join(upgradeDir, 'gemstack-upgrade'), { recursive: true });
@@ -1950,7 +1950,7 @@ describeIfSelected('gemstack-upgrade E2E', ['gemstack-upgrade-happy-path'], () =
   });
 
   testIfSelected('gemstack-upgrade-happy-path', async () => {
-    const mockGstack = path.join(upgradeDir, '.gemini', 'skills', 'gemstack');
+    const mockGemstack = path.join(upgradeDir, '.gemini', 'skills', 'gemstack');
     const result = await runSkillTest({
       prompt: `Read gemstack-upgrade/SKILL.md for the upgrade workflow.
 
@@ -1977,7 +1977,7 @@ IMPORTANT: The install directory is at ./.gemini/skills/gemstack — use that ex
     logCost('/gemstack-upgrade happy path', result);
 
     // Check that the version was updated
-    const versionAfter = fs.readFileSync(path.join(mockGstack, 'VERSION'), 'utf-8').trim();
+    const versionAfter = fs.readFileSync(path.join(mockGemstack, 'VERSION'), 'utf-8').trim();
     const output = result.output || '';
     const mentionsUpgrade = output.toLowerCase().includes('0.6.0') ||
       output.toLowerCase().includes('upgrade') ||
