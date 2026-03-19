@@ -1,7 +1,7 @@
 {
-  "name": "gstack",
+  "name": "gemstack",
   "version": "0.3.3",
-  "description": "Garry's Stack — Claude Code skills + fast headless browser. One repo, one install, entire AI engineering workflow.",
+  "description": "Garry's Stack — Gemini CLI skills + fast headless browser. One repo, one install, entire AI engineering workflow.",
   "license": "MIT",
   "type": "module",
   "bin": {
@@ -40,11 +40,11 @@
     "playwright",
     "headless",
     "cli",
-    "claude",
+    "gemini",
     "ai-agent",
     "devtools"
   ],
   "devDependencies": {
-    "@anthropic-ai/sdk": "^0.78.0"
+    "@google/generative-ai": "^0.21.0"
   }
 }
